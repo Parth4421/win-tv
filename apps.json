@@ -1,0 +1,12 @@
+[
+  { "name": "YouTube", "tag": "Ad-free, made for your controller", "url": "https://www.youtube.com/tv", "input": "tv",
+    "ua": "Mozilla/5.0 (Linux armeabi-v7a; Android 9) Cobalt/22.lts.3.306369-gold (unlike Gecko) v8/8.8.278.17-jit gles Starboard/13, Google_ATV_sabrina_2020/STTE.211214.003 (google, Chromecast) com.google.android.youtube.tv/5.20.401",
+    "color": "#E5102B", "icon": "youtube" },
+  { "name": "YouTube Music", "tag": "Your music, big screen, no ads", "url": "https://music.youtube.com", "color": "#C4302B", "icon": "youtubemusic" },
+  { "name": "Netflix", "tag": "Movies and series", "url": "https://www.netflix.com", "via": "edge", "color": "#B20710", "icon": "netflix" },
+  { "name": "Prime Video", "tag": "Originals, movies and live sport", "url": "https://www.primevideo.com", "via": "edge", "color": "#0A8DBF", "icon": "primevideo" },
+  { "name": "JioHotstar", "tag": "Cricket, shows and movies", "url": "https://www.hotstar.com", "via": "edge", "color": "#25307A", "icon": "jio" },
+  { "name": "Spotify", "tag": "Music and podcasts", "url": "https://open.spotify.com", "via": "edge", "color": "#169C46", "icon": "spotify" },
+  { "name": "Twitch", "tag": "Live streams", "url": "https://www.twitch.tv", "color": "#7B3FE4", "icon": "twitch" },
+  { "name": "Web", "tag": "Browse with your controller as a mouse", "url": "https://www.google.com", "color": "#3B78E7", "icon": "googlechrome" }
+]

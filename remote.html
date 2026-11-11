@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#0b0b12"><title>TV Remote</title>
+<style>
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{height:100%;background:#0b0b12;color:#fff;font-family:system-ui,'Segoe UI',sans-serif;overflow:hidden}
+body{display:flex;flex-direction:column;gap:12px;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom))}
+#pad{flex:1;border-radius:28px;background:linear-gradient(160deg,#1c1c2c,#12121c);display:grid;place-items:center;color:#667;font-size:14px;touch-action:none}
+.dp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+button{border:0;border-radius:20px;background:#1e1e2e;color:#fff;font-size:20px;height:58px;transition:transform .08s,background .08s}
+button:active{transform:scale(.93);background:#3a3a58}
+.ok{background:#5B6CFF}.ok:active{background:#7886ff}
+.bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.bar button{font-size:17px;height:48px}
+form{display:flex;gap:10px}input{flex:1;min-width:0;border:0;border-radius:16px;background:#1e1e2e;color:#fff;padding:0 16px;height:48px;font-size:16px}
+form button{height:48px;padding:0 18px;font-size:16px}
+.bar3{display:grid;grid-template-columns:2fr 1fr;gap:10px}.bar3 button{font-size:16px;height:48px}
+#mic{padding:0 14px}
+#st{position:fixed;top:6px;right:16px;font-size:11px;color:#667}
+</style></head><body>
+<div id="st">connecting…</div>
+<div id="pad">Touchpad: drag to move, tap to click, two fingers to scroll</div>
+<div class="dp">
+ <button data-n="back">Back</button><button data-n="up">▲</button><button data-h="1">Home</button>
+ <button data-n="left">◀</button><button class="ok" data-n="ok">OK</button><button data-n="right">▶</button>
+ <button data-k="bksp">⌫</button><button data-n="down">▼</button><button data-k="play">⏯</button>
+</div>
+<div class="bar"><button data-k="voldown">Vol−</button><button data-k="mute">Mute</button><button data-k="volup">Vol+</button><button data-k="prev">⏮</button><button data-k="next">⏭</button></div>
+<div class="bar3"><button data-k3="aonly">🎧 Audio only</button><button data-k3="home2" data-h2="1">⌂ Home</button></div>
+<form id="f"><input id="tx" placeholder="Type on the TV…" autocomplete="off"><button>Send</button></form>
+<script>
+const k=new URLSearchParams(location.search).get('k')||'';let ws;
+const st=document.getElementById('st'),buzz=()=>navigator.vibrate&&navigator.vibrate(12);
+function conn(){ws=new WebSocket(`ws://${location.host}/?k=${k}`);ws.onopen=()=>st.textContent='connected';
+ ws.onclose=()=>{st.textContent='reconnecting…';setTimeout(conn,1200)}}conn();
+const tx=o=>ws.readyState===1&&ws.send(JSON.stringify(o));
+document.querySelectorAll('button[data-n]').forEach(b=>b.onclick=()=>{buzz();tx({t:'nav',d:b.dataset.n})});
+document.querySelectorAll('button[data-k]').forEach(b=>b.onclick=()=>{buzz();tx({t:'key',k:b.dataset.k})});
+document.querySelector('[data-h]').onclick=()=>{buzz();tx({t:'home'})};
+document.querySelector('[data-k3=aonly]').onclick=()=>{buzz();tx({t:'audioonly'})};
+document.querySelector('[data-h2]').onclick=()=>{buzz();tx({t:'home'})};
+document.getElementById('f').onsubmit=e=>{e.preventDefault();const v=tx_.value;if(v)tx({t:'text',v});tx_.value=''};const tx_=document.getElementById('tx');
+const p=document.getElementById('pad');let last,t0,moved=0,n=0,ax=0,ay=0,sy=0;
+p.ontouchstart=e=>{n=e.touches.length;last=[e.touches[0].clientX,e.touches[0].clientY];t0=Date.now();moved=0};
+p.ontouchmove=e=>{e.preventDefault();const t=e.touches[0],dx=t.clientX-last[0],dy=t.clientY-last[1];last=[t.clientX,t.clientY];moved+=Math.abs(dx)+Math.abs(dy);
+ if(e.touches.length>1)sy+=dy;else{ax+=dx*2.2;ay+=dy*2.2}};
+p.ontouchend=e=>{if(e.touches.length===0&&Date.now()-t0<220&&moved<10){buzz();tx({t:'click',b:n>1?'r':'l'})}};
+setInterval(()=>{if(ax||ay){tx({t:'move',x:ax,y:ay});ax=ay=0}if(sy){tx({t:'scroll',y:sy*3});sy=0}},16);
+</script></body></html>

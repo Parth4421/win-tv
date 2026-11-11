@@ -1,0 +1,15 @@
+Third-party software included in the Win TV download
+====================================================
+
+FFmpeg / FFprobe
+  Used to play video and audio formats (separate programs, started by Win TV).
+  ffmpeg.exe: build 20181217-f22fcd4 (Zeranoe static build), from the npm package @ffmpeg-installer/win32-x64 4.1.0
+  ffprobe.exe: from the npm package @ffprobe-installer/win32-x64 5.1.0 (gyan.dev build)
+  License: GNU General Public License v3 (GPL-3.0) - https://www.gnu.org/licenses/gpl-3.0.html
+  Source code: https://ffmpeg.org/download.html  and  https://github.com/FFmpeg/FFmpeg
+               (ffmpeg version used: commit f22fcd4, https://github.com/FFmpeg/FFmpeg/commit/f22fcd4)
+
+Electron - MIT License - https://github.com/electron/electron
+  (Chromium and its components: see LICENSES.chromium.html inside the app folder)
+qrcode   - MIT License - https://github.com/soldair/node-qrcode
+ws       - MIT License - https://github.com/websockets/ws

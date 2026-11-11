@@ -1,0 +1,59 @@
+{
+  "name": "tv",
+  "productName": "TV",
+  "version": "1.0.0",
+  "description": "Couch-friendly TV app for Windows: movies, YouTube and apps with a game controller or your phone",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win dir"
+  },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
+    "qrcode": "^1.5.4",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "electron": "45.3.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.tv.launcher",
+    "asarUnpack": [
+      "helper.ps1",
+      "node_modules/@ffmpeg-installer/**",
+      "node_modules/@ffprobe-installer/**",
+      "net.ps1"
+    ],
+    "files": [
+      "main.js",
+      "files.js",
+      "preload.js",
+      "app-preload.js",
+      "index.html",
+      "remote.html",
+      "helper.ps1",
+      "apps.json",
+      "TV.ico",
+      "media.js",
+      "net.ps1",
+      "!**/node_modules/**/.env",
+      "!**/node_modules/**/*~",
+      "!**/node_modules/**/coverage/**",
+      "!**/node_modules/**/*.{md,markdown,ts,map}",
+      "!**/node_modules/**/.{eslintrc.json,eslintignore,prettierignore,gitignore}"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "TV.ico"
+    },
+    "portable": {
+      "artifactName": "TV.exe"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "license": "MIT"
+}
